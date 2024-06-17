@@ -8,6 +8,50 @@ customtkinter.set_appearance_mode(DARK_MODE)
 customtkinter.set_default_color_theme("dark-blue")
 
 
+
+class NewProduct(customtkinter.CTkToplevel):
+    def __init__(self, master = None):
+        super().__init__(master=master, )
+        self.attributes('-topmost',True)
+
+        self.title("Adicionar Produto")
+        self.geometry('200x200')
+        label = customtkinter.CTkLabel(self, text='Adicionar Novo Produto')
+
+
+
+        label.pack()
+
+class NewUser(customtkinter.CTkToplevel):
+    def __init__(self, master = None):
+        super().__init__(master=master, )
+        self.attributes('-topmost',True)
+
+        self.title("New Window")
+        self.geometry('200x200')
+        label = customtkinter.CTkLabel(self, text='Adicionar novo Usuário')
+
+
+        label.pack()
+
+
+
+class NewOrder(customtkinter.CTkToplevel):
+    def __init__(self, master = None):
+        super().__init__(master=master, )
+        self.attributes('-topmost',True)
+
+        self.title("Novo Pedido")
+        self.geometry('200x200')
+        label = customtkinter.CTkLabel(self, text='Adicionar Novo Pedido')
+
+
+
+        label.pack()
+
+
+
+
 class App(customtkinter.CTk):
 
     frames = {'info': None, "produto": None, "pedido": None, 'usuario': None}
@@ -41,8 +85,8 @@ class App(customtkinter.CTk):
 
     def __init__(self):
         super().__init__()
-        # self.state('withdraw')
-        self.title("Change Frames")
+        self.state('withdraw')
+        self.title("Sistema de Cadastro")
 
         self.geometry("{0}x{0}+0+0".format(self.winfo_screenwidth(), self.winfo_screenheight()))
 
@@ -80,14 +124,15 @@ class App(customtkinter.CTk):
 
         ## INFO
         App.frames['info']  = customtkinter.CTkFrame(main_container, fg_color="green")
-        bt_from_main = customtkinter.CTkButton(App.frames['info'], text="Info", command=lambda:print("info") )
+        bt_from_main = customtkinter.CTkButton(App.frames['info'], text="Info", command=print('info'))
         bt_from_main.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
+
 
 
 
         ## CADASTRO DE PRODUTOS 
         App.frames['produto'] = customtkinter.CTkFrame(main_container, fg_color="red")
-        bt_from_produto = customtkinter.CTkButton(App.frames['produto'], text="Produtos", command=lambda:print("produto") )
+        bt_from_produto = customtkinter.CTkButton(App.frames['produto'], text="Produtos", command=(lambda: NewProduct(App.frames['info'])) )
         bt_from_produto.pack(padx=5, pady=5)
 
         table_product = ttk.Treeview(App.frames['produto'], columns=('ID','Produto', 'Preço', 'Quantidade'), show='headings', )
@@ -121,7 +166,7 @@ class App(customtkinter.CTk):
 
         ## CADASTRO DE PEDIDOS
         App.frames['pedido'] = customtkinter.CTkFrame(main_container,fg_color="blue")
-        bt_from_pedido = customtkinter.CTkButton(App.frames['pedido'], text="Pedidos", command=lambda:print("pedido") )
+        bt_from_pedido = customtkinter.CTkButton(App.frames['pedido'], text="Pedidos", command=lambda:NewOrder(master=App.frames['pedido']) )
         bt_from_pedido.pack(padx=0.5, pady=0.5)
 
 
@@ -152,7 +197,7 @@ class App(customtkinter.CTk):
 
         ## CADASTRO DE USUÁRIOS
         App.frames['usuario'] = customtkinter.CTkFrame(main_container,fg_color="blue")
-        bt_from_usuario = customtkinter.CTkButton(App.frames['usuario'], text="usuarios", command=lambda:print("usuario") )
+        bt_from_usuario = customtkinter.CTkButton(App.frames['usuario'], text="usuarios", command=lambda:NewUser(master=App.frames['usuario']))
         bt_from_usuario.pack(padx=0.5, pady=0.5)
 
         table_usuario = ttk.Treeview(App.frames['usuario'], columns=['ID', 'Nome', 'Email', 'Role'], show='headings')
