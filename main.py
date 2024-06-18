@@ -1,7 +1,7 @@
 import tkinter
 import customtkinter
-from CTkTable import *
-from tkinter import ttk
+from tkinter import ttk, messagebox
+from CTkMessagebox import CTkMessagebox
 
 DARK_MODE = "dark"
 customtkinter.set_appearance_mode(DARK_MODE)
@@ -10,29 +10,144 @@ customtkinter.set_default_color_theme("dark-blue")
 
 
 class NewProduct(customtkinter.CTkToplevel):
+
+    def add_product(self, id:int, nome:str, preco:int, quant:int):
+        if not id or not nome or not preco or not quant:
+            CTkMessagebox(title='Campo Inválido',message='Há Campos Vazios no Formulário!', icon='cancel', justify='center') 
+
+        elif not id.isnumeric() or not preco.isnumeric() or not  quant.isnumeric():
+            CTkMessagebox(title='Campo Inválido',message='Campos \n CÓDIGO DE PRODUTO, PREÇO ou QUANTIDADE \n não estão com valores do tipo Inteiro/Real', icon='warning', justify='center')
+        
+        else:
+            id = int(id)
+            preco = round(float(preco.replace(',', '.')), 2)
+            quant = int(quant)
+
+            print(preco)
+            print(quant)
+        
+
     def __init__(self, master = None):
         super().__init__(master=master, )
         self.attributes('-topmost',True)
+        
 
         self.title("Adicionar Produto")
-        self.geometry('200x200')
-        label = customtkinter.CTkLabel(self, text='Adicionar Novo Produto')
+        self.geometry(f'620x480')
+        
+        title = customtkinter.CTkLabel(self, text='Adicionar Novo Produto', font=('Sans-Serif', 20))
 
 
+        id_produtoFrame = customtkinter.CTkFrame(self)
+        nome_produtoFrame = customtkinter.CTkFrame(self)
+        preco_produtoFrame  = customtkinter.CTkFrame(self)
+        quant_produtoFrame = customtkinter.CTkFrame(self)
 
-        label.pack()
+
+        id_produtoLabel = customtkinter.CTkLabel(id_produtoFrame, text='Codigo de Produto')
+        nome_produtoLabel = customtkinter.CTkLabel(nome_produtoFrame, text='Nome do Produto')
+        preco_produtoLabel = customtkinter.CTkLabel(preco_produtoFrame, text='Preço')
+        quant_produtoLabel = customtkinter.CTkLabel(quant_produtoFrame, text='Quantidade')
+
+
+        id_produtoEntry = customtkinter.CTkEntry(master=id_produtoFrame, placeholder_text='12345678', width=220, height=45, corner_radius=5, text_color='white', font=('Sans-Serif', 16))
+        nome_produtoEntry = customtkinter.CTkEntry(master=nome_produtoFrame, placeholder_text='Nome do Produto', width=220,  height=45, corner_radius=5, text_color='white', font=('Sans-Serif', 16))
+        preco_produtoEntry = customtkinter.CTkEntry(master=preco_produtoFrame, placeholder_text='0,00', width=220, height=45, corner_radius=5, text_color='white', font=('Sans-Serif', 16))
+        quant_produtoEntry = customtkinter.CTkEntry(master=quant_produtoFrame, placeholder_text='0', width=220, height=45, corner_radius=5, text_color='white', font=('Sans-Serif', 16))
+
+        btn_salvar = customtkinter.CTkButton(self, text=('SALVAR'), command=lambda:self.add_product(id=id_produtoEntry.get(), nome=nome_produtoEntry.get(), preco=preco_produtoEntry.get(), quant=quant_produtoEntry.get()))
+        self.columnconfigure(0, weight=1)
+        self.rowconfigure(10, weight=1)
+
+        title.grid(row=1, column=0 )
+
+        
+        id_produtoLabel.grid(row=0, column=0)
+        id_produtoEntry.grid(row=1, column=0)
+
+
+        nome_produtoLabel.grid(row=0, column=0)
+        nome_produtoEntry.grid(row=1, column=0)
+
+        preco_produtoLabel.grid(row=0, column=0)
+        preco_produtoEntry.grid(row=1, column=0)
+
+        quant_produtoLabel.grid(row=0, column=0)
+        quant_produtoEntry.grid(row=1, column=0)
+
+
+        id_produtoFrame.grid(row=0, column=0, pady=10)
+        nome_produtoFrame.grid(row=1, column=0, pady=10)
+        preco_produtoFrame.grid(row=2, column=0, pady=10)
+        quant_produtoFrame.grid(row=3, column=0, pady=10)
+        
+
+        btn_salvar.grid(row=10, column=0)
+
+
+        self.mainloop()
+
 
 class NewUser(customtkinter.CTkToplevel):
+
+    def add_user(self, username:str, password:str, conf_password:str):
+        if username and password and conf_password:
+            if password == conf_password:
+                print(username)
+                print(password)
+                print(conf_password)
+
+            else:
+                CTkMessagebox(self, title='Senha Inválida',  message='Senhas não correspondente! Escreva a senha novamente.', icon='warning')
+        else:
+            CTkMessagebox(self, title='Campos Vazios', message='Há Campos Vazios no Formulário!', icon='cancel')
+
     def __init__(self, master = None):
         super().__init__(master=master, )
         self.attributes('-topmost',True)
 
-        self.title("New Window")
-        self.geometry('200x200')
-        label = customtkinter.CTkLabel(self, text='Adicionar novo Usuário')
+        self.title("Novo Usuario")
+        self.geometry('640x480')
+        title = customtkinter.CTkLabel(self, text='Adicionar novo Usuário')
+
+        nome_userFrame = customtkinter.CTkFrame(self)
+        password_userFrame  = customtkinter.CTkFrame(self)
+        conf_password_userFrame = customtkinter.CTkFrame(self)
 
 
-        label.pack()
+
+        nome_userLabel = customtkinter.CTkLabel(nome_userFrame, text='Nome de Usuário')
+        password_userLabel = customtkinter.CTkLabel(password_userFrame, text='Senha')
+        conf_password_userLabel = customtkinter.CTkLabel(conf_password_userFrame, text='Confirmar Senha')
+
+
+
+        nome_userEntry = customtkinter.CTkEntry(master=nome_userFrame, placeholder_text='Fulano', width=220,  height=45, corner_radius=5, text_color='white', font=('Sans-Serif', 16))
+        password_userEntry = customtkinter.CTkEntry(master=password_userFrame, placeholder_text='*******', width=220, height=45, corner_radius=5, text_color='white', font=('Sans-Serif', 16))
+        conf_password_userEntry = customtkinter.CTkEntry(master=conf_password_userFrame, placeholder_text='*******', width=220, height=45, corner_radius=5, text_color='white', font=('Sans-Serif', 16))
+
+        btn_salvar = customtkinter.CTkButton(self, text=('SALVAR'), command=lambda:self.add_user(username=nome_userEntry.get(), password=password_userEntry.get(), conf_password=conf_password_userEntry.get()))
+        self.columnconfigure(0, weight=1)
+        self.rowconfigure(4, weight=3)
+
+        title.grid(row=0, column=0, pady=20 )
+
+        nome_userLabel.grid(row=0, column=0)
+        nome_userEntry.grid(row=1, column=0)
+
+        password_userLabel.grid(row=0, column=0)
+        password_userEntry.grid(row=1, column=0)
+
+        conf_password_userLabel.grid(row=0, column=0)
+        conf_password_userEntry.grid(row=1, column=0)
+
+
+        nome_userFrame.grid(row=1, column=0, pady=10)
+        password_userFrame.grid(row=2, column=0, pady=10)
+        conf_password_userFrame.grid(row=3, column=0, pady=10)
+        
+
+        btn_salvar.grid(row=4, column=0)
 
 
 
@@ -42,12 +157,41 @@ class NewOrder(customtkinter.CTkToplevel):
         self.attributes('-topmost',True)
 
         self.title("Novo Pedido")
-        self.geometry('200x200')
-        label = customtkinter.CTkLabel(self, text='Adicionar Novo Pedido')
+        self.geometry('640x480')
+        title = customtkinter.CTkLabel(self, text='Adicionar Novo Pedido')
+
+        cliente_orderFrame = customtkinter.CTkFrame(self)
+        list_products_orderFrame  = customtkinter.CTkFrame(self)
+        caixa_orderFrame = customtkinter.CTkFrame(self)
+
+        cliente_orderList = customtkinter.CTkComboBox(cliente_orderFrame, values=['Fabio', 'Gabriel', 'Luann'])
+
+        list_productsList = customtkinter.CTkLabel(list_products_orderFrame, text='sad')
+        #  
+        caixa_orderList = customtkinter.CTkComboBox(caixa_orderFrame, values=['Fabio', 'Gabriel', 'Luann'])
+        
+
+        btn_salvar = customtkinter.CTkButton(self, text=('Salvar'))
 
 
+        self.columnconfigure(0, weight=1)
+        self.rowconfigure(5, weight=3)
+        
+    
+        title.grid(row=0, column=0, pady=20 )
 
-        label.pack()
+
+        cliente_orderList.grid(row=0, column=0)
+        caixa_orderList.grid(row=0, column=0)
+        list_productsList.grid(row=0, column=0)
+
+
+        cliente_orderFrame.grid(row=1, column=0)
+        caixa_orderFrame.grid(row=2, column=0)
+        list_products_orderFrame.grid(row=3, column=0)
+
+        btn_salvar.grid(row=4, column=0)
+
 
 
 
@@ -124,7 +268,7 @@ class App(customtkinter.CTk):
 
         ## INFO
         App.frames['info']  = customtkinter.CTkFrame(main_container, fg_color="green")
-        bt_from_main = customtkinter.CTkButton(App.frames['info'], text="Info", command=print('info'))
+        bt_from_main = customtkinter.CTkButton(App.frames['info'], text="Info", command=lambda:NewProduct(App.frames['info']))
         bt_from_main.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
 
 
@@ -132,7 +276,7 @@ class App(customtkinter.CTk):
 
         ## CADASTRO DE PRODUTOS 
         App.frames['produto'] = customtkinter.CTkFrame(main_container, fg_color="red")
-        bt_from_produto = customtkinter.CTkButton(App.frames['produto'], text="Produtos", command=(lambda: NewProduct(App.frames['info'])) )
+        bt_from_produto = customtkinter.CTkButton(App.frames['produto'], text="Produtos", command=(lambda: NewProduct(App.frames['produto'])) )
         bt_from_produto.pack(padx=5, pady=5)
 
         table_product = ttk.Treeview(App.frames['produto'], columns=('ID','Produto', 'Preço', 'Quantidade'), show='headings', )
