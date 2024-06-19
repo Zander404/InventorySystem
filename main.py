@@ -71,17 +71,20 @@ def gbill():
 def savebill():
     op=messagebox.askyesno('Save bill', 'Do You waint to save the bill')
     if op>0:
-        bill_details=textarea.get(1,0, END)
+        bill_details=textarea.get(1.0, END)
         f1=open('bills/'+str(bill_no.get())+'.txt', 'w')
         f1.write(bill_details)
         f1.close()
         messagebox.showinfo('SAVED', f'Bill no: {bill_no.get()} Saved succesfully')
         textarea.delete(0.0, END)
+        
 
     else:
         return
 
 def clear():
+    global l
+    l.clear()
     c_name.set('')
     c_phone.set('')
     Item.set('')

@@ -9,7 +9,6 @@ cursor.execute('''
     CREATE TABLE IF NOT EXISTS user (
                id INTEGER PRIMARY KEY,
                username  TEXT NOT NULL,
-               email TEXT NOT NULL,
                password TEXT NOT NULL ,
                role TEXT
                )''')
@@ -42,5 +41,10 @@ cursor.execute('''
                FOREIGN KEY(cashier_id) REFERENCES user(id)
             );''')
 
+conn.execute('INSERT INTO user(username, password, role) VALUES ("admin", "admin", "ADMIN")')
+conn.execute('INSERT INTO user(username, password, role) VALUES ("admin1", "admin1", "TESTE ")')
+
 conn.commit()
+
+
 conn.close()
