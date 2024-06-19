@@ -8,7 +8,7 @@ root = CTk()
 root.geometry('1366x768')
 root.title('CONTROLE DE ADMIN')
 
-WEIGHT = '1366'
+WIDTH = '1366'
 HEIGHT = '768'
 
 
@@ -20,7 +20,7 @@ def Exit(top):
 class Painel:
    
     def __init__(self, top: CTkToplevel=None):
-        top.geometry(f'{WEIGHT}x{HEIGHT}')
+        top.geometry(f'{WIDTH}x{HEIGHT}')
         top.title('MAIN CONTROL')
 
         self.controlesFrame = CTkFrame(top, height=200)
@@ -29,12 +29,12 @@ class Painel:
         top.configure(image=self.logo)
 
 
-        self.btn1 = CTkButton(self.controlesFrame, text='Controle1', width=250,
+        self.btn1 = CTkButton(self.controlesFrame, text='Produto', width=250,
                          height=100, command=lambda:product())
-        self.btn2 = CTkButton(self.controlesFrame, text='Controle2',
-                         width=250, height=100)
-        self.btn3 = CTkButton(self.controlesFrame, text='Controle3',
-                         width=250, height=100)
+        self.btn2 = CTkButton(self.controlesFrame, text='Usuário',
+                         width=250, height=100, command=lambda:user())
+        self.btn3 = CTkButton(self.controlesFrame, text='Notas Fiscais',
+                         width=250, height=100, command=lambda:invoice())
         self.btn4 = CTkButton(self.controlesFrame, text='Controle4',
                          width=250, height=100)
 
@@ -62,15 +62,6 @@ class Product:
             inv.destroy()
             adm.deiconify()
 
-    
-    def login(self):
-        root.withdraw()
-        global adm
-        global produto
-        adm = CTkToplevel()
-        produto = Painel(adm)
-        adm.mainloop()
-
     def __init__(self, top=None):
         top.geometry('1366x768')
         title = CTkLabel(top, text='PRODUTOS')
@@ -91,9 +82,10 @@ class Login_page:
         adm = CTkToplevel()
         page1 = Painel(adm)
         adm.mainloop()
+        
 
     def __init__(self, top=None):
-        top.geometry('1920x1400')
+        top.geometry(f'{WIDTH}x{HEIGHT}')
         title = CTkLabel(top, text='Login')
         teste_btn = CTkButton(top, text='Teste', command=lambda:self.login())
 
@@ -103,11 +95,46 @@ class Login_page:
         top.mainloop()
 
 
-def exitt():
-    sure = messagebox.askyesno("Exit","Are you sure you want to exit?", parent=root)
-    if sure == True:
-        adm.destroy()
-        root.destroy()
+
+class User:
+
+    def __init__(self, top=None):
+        top.geometry(f'{WIDTH}x{HEIGHT}')
+        title = CTkLabel(top, text='User')
+        teste_btn = CTkButton(top, text='Teste', command=lambda:self.Exit())
+
+        title.pack()
+        teste_btn.pack()
+
+        top.mainloop()
+
+    def Exit(self):
+        sure = messagebox.askyesno("Exit","Are you sure you want to exit?", parent=inv)
+        if sure == True:
+            inv.destroy()
+            adm.deiconify()
+
+
+
+
+class Invoice:
+  
+    def __init__(self, top=None):
+        top.geometry(f'{WIDTH}x{HEIGHT}')
+        title = CTkLabel(top, text='INVOICE')
+        teste_btn = CTkButton(top, text='Teste', command=lambda:self.Exit())
+
+        title.pack()
+        teste_btn.pack()
+
+        top.mainloop()
+
+    def Exit(self):
+        sure = messagebox.askyesno("Exit","Are you sure you want to exit?", parent=self)
+        if sure == True:
+            self.destroy()
+            adm.deiconify()
+
 
 
 
@@ -118,8 +145,32 @@ def product():
 
     inv = CTkToplevel()
     page2 = Product(inv)
-    inv.protocol('WM_DELETE_WINDOW', exitt)
+    inv.protocol('WM_DELETE_WINDOW', Exit(inv))
     inv.mainloop()
+
+    
+
+def user():
+    adm.withdraw()
+    global user
+    global page3
+
+    user = CTkToplevel()
+    page3 = User(user)
+    user.protocol('WM_DELETE_WINDOW', Exit(inv))
+    user.mainloop()
+
+    
+
+def invoice():
+    adm.withdraw()
+    global invoice
+    global page4
+
+    invoice = CTkToplevel()
+    page4 = Invoice(invoice)
+    invoice.protocol('WM_DELETE_WINDOW', Exit(inv))
+    invoice.mainloop()
 
     
 
@@ -127,4 +178,10 @@ def product():
 
 
 
-page1 = Login_page(root)
+# page1 = Login_page(root)
+
+page2 = User(root)
+
+# page3 = Invoice(root)
+
+# page4 = Painel(root)
