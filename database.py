@@ -42,7 +42,7 @@ cursor.execute('''
             );''')
 
 conn.execute('INSERT INTO user(username, password, role) VALUES ("admin", "admin", "ADMIN")')
-conn.execute('INSERT INTO user(username, password, role) VALUES ("admin1", "admin1", "TESTE ")')
+conn.execute('INSERT INTO user(username, password, role) VALUES ("admin1", "admin1", "TESTE")')
 
 conn.commit()
 
