@@ -22,6 +22,7 @@ c_phone = StringVar()
 Item=StringVar()
 Rate=IntVar( )
 Quantity=IntVar()
+search_code = StringVar()
 
 bill_no = StringVar()
 x=random.randint(1000, 9999)
@@ -48,9 +49,33 @@ def get_produtos():
 def product_info(_):
     for index, item in enumerate(produtos):
         if  itm_txt.get() == item[1]:
+            Item.set(itm_txt.get())
             Rate.set(produtos[index][2])
             return
         
+
+def search():
+    # print(code)
+    print(search_code.get())
+
+    try:
+        conn = sqlite3.Connection('stock.db')
+        cur = conn.cursor()
+
+        cur.execute('SELECT * FROM product WHERE id=?', (search_code.get(),))
+        row = cur.fetchone()
+        print(row)
+        Item.set(row[1])
+        Rate.set(row[2])
+
+    except Exception as e:
+        print(e)
+
+    finally:
+        search_code.set('')
+        conn.close()
+
+
 
 
 ### FUNCTION
@@ -147,43 +172,49 @@ cphone_txt.grid(row=0, column=3, padx=16, pady=5)
 ## Product Details
 
 F2 = LabelFrame(root, text='Produtos Detail', font=('times new roman', 18, 'bold'), bd=10, bg=bg_color, fg='gold', relief=GROOVE)
-F2.place(x=20, y=180, width=630, height=500)
+F2.place(x=20, y=180, width=630, height=600)
 
 ### Produto
+search_code_txt = CTkLabel(F2, text='Código do Produto', font=('times new roman', 18, 'bold'), text_color='green')
+search_code_txt.grid(row=0, column=0, padx=30, pady=20)
+
+search_code_entry=CTkEntry(F2,width=200, font=('arial', 15, 'bold'), textvariable=search_code, validate='focusout', validatecommand=(search))
+search_code_entry.grid(row=0, column=1, padx=10, pady=20)
+
 itm = CTkLabel(F2, text='Product Name', font=('times new roman', 18, 'bold'), text_color='green')
-itm.grid(row=0, column=0, padx=30, pady=20)
+itm.grid(row=1, column=0, padx=30, pady=20)
 
 itm_txt=CTkComboBox(F2,width=200, font=('arial', 15, 'bold'), values=(product_name), command=product_info)
-itm_txt.grid(row=0, column=1, padx=10, pady=20)
+itm_txt.grid(row=1, column=1, padx=10, pady=20)
 
 ## Rate
 rate = CTkLabel(F2, text='Product Rate', font=('times new roman', 18, 'bold'), text_color='green')
-rate.grid(row=1, column=0, padx=30, pady=20)
+rate.grid(row=2, column=0, padx=30, pady=20)
 
 rate_txt=CTkEntry(F2,width=200, font=('arial', 15, 'bold'), textvariable=Rate, state='readonly')
-rate_txt.grid(row=1, column=1, padx=10, pady=20)
+rate_txt.grid(row=2, column=1, padx=10, pady=20)
 
 ## QUANTIDADE
 quantity = CTkLabel(F2, text='Product Quantity', font=('times new roman', 18, 'bold'), text_color='green')
-quantity.grid(row=2, column=0, padx=30, pady=20)
+quantity.grid(row=3, column=0, padx=30, pady=20)
 
 quantity_txt=CTkEntry(F2,width=200, font=('arial', 15, 'bold'), textvariable=Quantity)
-quantity_txt.grid(row=2, column=1, padx=10, pady=20)
+quantity_txt.grid(row=3, column=1, padx=10, pady=20)
 
 
 ## BOTÃO
 
 btn1= CTkButton(F2, text='Add Item', font=('arial', 15, 'bold'), text_color='lime', command=lambda:additem())
-btn1.grid(row=3, column=0, padx=5, pady=30)
+btn1.grid(row=4, column=0, padx=5, pady=30)
 
 btn2= CTkButton(F2, text='Generate Bill', font=('arial', 15, 'bold'), text_color='lime', command=lambda:gbill())
-btn2.grid(row=3, column=1, padx=5, pady=30)
+btn2.grid(row=4, column=1, padx=5, pady=30)
 
 btn3= CTkButton(F2, text='Clear', font=('arial', 15, 'bold'), text_color='lime', command=lambda:clear())
-btn3.grid(row=4, column=0, padx=5, pady=30)
+btn3.grid(row=5, column=0, padx=5, pady=30)
 
 btn4= CTkButton(F2, text='Exit', font=('arial', 15, 'bold'), text_color='lime', command=lambda:exitt())
-btn4.grid(row=4, column=1, padx=5, pady=30)
+btn4.grid(row=5, column=1, padx=5, pady=30)
 
 
 ## BILL
