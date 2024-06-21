@@ -3,6 +3,7 @@ from tkinter import messagebox, PhotoImage, LabelFrame, Frame
 import os
 from PIL import Image, ImageTk
 import random
+import sqlite3
 
 root = CTk()
 
@@ -25,8 +26,31 @@ Quantity=IntVar()
 bill_no = StringVar()
 x=random.randint(1000, 9999)
 bill_no.set(str(x))
-global l
+global l, proutos
 l = list()
+produtos = list()
+product_name = list()
+
+
+
+def get_produtos():
+    conn = sqlite3.Connection('stock.db')
+    cur = conn.cursor()
+
+    cur.execute('SELECT * FROM product')
+    row = cur.fetchall()
+
+    for product_item in row:
+        produtos.append(product_item)
+        product_name.append(product_item[1])
+        
+
+def product_info(_):
+    for index, item in enumerate(produtos):
+        if  itm_txt.get() == item[1]:
+            Rate.set(produtos[index][2])
+            return
+        
 
 
 ### FUNCTION
@@ -96,7 +120,7 @@ def exitt():
     op=messagebox.askyesno('EXIT', 'Do you really wanto to exit')
 
 #========================================
-
+get_produtos()
 # TOP SECTION
 title=CTkLabel(root, text='Billing Software', bg_color=bg_color, font=('times new romman', 25, 'bold') )
 title.pack(fill='x')
@@ -129,14 +153,14 @@ F2.place(x=20, y=180, width=630, height=500)
 itm = CTkLabel(F2, text='Product Name', font=('times new roman', 18, 'bold'), text_color='green')
 itm.grid(row=0, column=0, padx=30, pady=20)
 
-itm_txt=CTkEntry(F2,width=200, font=('arial', 15, 'bold'), textvariable=Item )
+itm_txt=CTkComboBox(F2,width=200, font=('arial', 15, 'bold'), values=(product_name), command=product_info)
 itm_txt.grid(row=0, column=1, padx=10, pady=20)
 
 ## Rate
 rate = CTkLabel(F2, text='Product Rate', font=('times new roman', 18, 'bold'), text_color='green')
 rate.grid(row=1, column=0, padx=30, pady=20)
 
-rate_txt=CTkEntry(F2,width=200, font=('arial', 15, 'bold'), textvariable=Rate)
+rate_txt=CTkEntry(F2,width=200, font=('arial', 15, 'bold'), textvariable=Rate, state='readonly')
 rate_txt.grid(row=1, column=1, padx=10, pady=20)
 
 ## QUANTIDADE
