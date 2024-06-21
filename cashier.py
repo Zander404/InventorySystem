@@ -55,7 +55,6 @@ def product_info(_):
         
 
 def search():
-    # print(code)
     print(search_code.get())
 
     try:
@@ -65,7 +64,9 @@ def search():
         cur.execute('SELECT * FROM product WHERE id=?', (search_code.get(),))
         row = cur.fetchone()
         print(row)
-        Item.set(row[1])
+
+        Item.set(product_name.index(row[1]))
+        # Item.set(row[1])
         Rate.set(row[2])
 
     except Exception as e:

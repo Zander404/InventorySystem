@@ -18,15 +18,14 @@ root.title('PAINEL DE CONTROLE -  ADMIN')
 
 
 ## Function
-def estoque():
+def admin():
     root.withdraw()
-    os.system('python estoque.py ')
+    os.system('python login_admin.py')
     root.deiconify()
 
-
-def usuario():
+def caixa():
     root.withdraw()
-    os.system('python usuario.py ')
+    os.system('python login_cashier.py ')
     root.deiconify()
 
 
@@ -37,19 +36,18 @@ F1 = CTkFrame(root, width=WIDTH, height=HEIGHT, fg_color='#2f2f2f')
 F1.pack(expand=True, fill=BOTH)
 
 
-title = CTkLabel(F1, text='PAINEL DE CONTROLE -  ADMIN', width=200)
+title = CTkLabel(F1, text='LOJA', width=200)
 title.pack(expand=True, fill=X, pady=0.5 )
 
 F2 = CTkFrame(F1, width=600, fg_color='#2a2a2a')
 F2.pack(fill=X, expand=True)
 
-bt_estoque = CTkButton(F2, text='ESTOQUE', width=200, height=45, command=estoque)
-
-bt_usuario = CTkButton(F2, text='USUÁRIOS', width=200, height=45, command=usuario)
+bt_admin = CTkButton(F2, text='ADMIN', width=200, height=45, command=admin)
+bt_caixa = CTkButton(F2, text='CAIXA', width=200, height=45, command=caixa)
 # print(get_username())
 
-bt_estoque.place(relx=.07, rely=0.5)
+bt_admin.place(relx=.07, rely=0.5)
 
-bt_usuario.place(relx=.8, rely=0.5)
+bt_caixa.place(relx=.8, rely=0.5)
 
 root.mainloop()
